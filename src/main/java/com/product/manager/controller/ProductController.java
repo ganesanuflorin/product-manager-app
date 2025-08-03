@@ -9,13 +9,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/products")
+@RequestMapping("/api/v1/product")
 @Tag(name = "Product Controller", description = "API for managing products")
 public class ProductController {
 
@@ -31,5 +32,11 @@ public class ProductController {
     @Operation(summary = "Get product by code", description = "Retrieves a product by its unique code")
     public ResponseEntity<ProductDto> getProductByCode(@PathVariable Long code) {
         return ResponseEntity.ok(productService.getProductByCode(code));
+    }
+
+    @PutMapping("/change")
+    @Operation(summary = "Update product by code", description = "Updates an existing product's details by its unique code")
+    public ResponseEntity<String> updateProduct(@RequestBody ProductDto request) {
+        return ResponseEntity.ok(productService.updateProduct(request));
     }
 }
