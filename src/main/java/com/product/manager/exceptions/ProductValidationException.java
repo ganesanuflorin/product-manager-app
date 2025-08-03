@@ -1,7 +1,15 @@
 package com.product.manager.exceptions;
 
-public class ProductValidationException extends RuntimeException{
-    public ProductValidationException(String message) {
+import lombok.Getter;
+import org.springframework.http.HttpStatus;
+
+@Getter
+public class ProductValidationException extends RuntimeException {
+
+    private final HttpStatus status;
+
+    public ProductValidationException(String message, HttpStatus status) {
         super(message);
+        this.status = status;
     }
 }

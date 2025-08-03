@@ -12,7 +12,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(ProductValidationException.class)
     public ResponseEntity<String> handleProductValidationException(ProductValidationException ex) {
-        log.warn("Product validation failed: {}", ex.getMessage());
-        return ResponseEntity.badRequest().body(ex.getMessage());
+        log.warn("Failed: {}", ex.getMessage());
+        return ResponseEntity.status(ex.getStatus()).body(ex.getMessage());
     }
 }
