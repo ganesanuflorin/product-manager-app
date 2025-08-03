@@ -1,6 +1,7 @@
 package com.product.manager.service;
 
 import com.product.manager.dto.ProductDto;
+import com.product.manager.dto.UpdateProductDto;
 import com.product.manager.exceptions.ProductValidationException;
 import com.product.manager.mapper.ProductMapper;
 import com.product.manager.repository.ProductRepository;
@@ -39,16 +40,41 @@ public class ProductService {
     }
 
     @Transactional
-    public String updateProduct(ProductDto request) {
+    public String changeProduct(ProductDto request) {
 
         if (!productRepository.existsByCode(request.code())) {
-            log.warn("Attempted to update non-existing product with code: {}", request.code());
+            log.warn("Attempted to change non-existing product with code: {}", request.code());
             throw new ProductValidationException("Product with code " + request.code() + " does not exist.", HttpStatus.NOT_FOUND);
         }
 
         var product = productMapper.toEntity(request);
-        log.info("Product '{}' updated with code '{}'", product.getProductName(), product.getCode());
+        log.info("Product '{}' changed with code '{}'", product.getProductName(), product.getCode());
 
-        return "Product " + product.getProductName() + " updated successfully.";
+        return "Product " + product.getProductName() + " changed successfully.";
+    }
+
+    @Transactional
+    public String updateProduct(Long code, UpdateProductDto request) {
+
+        var product = productRepository.findByCode(code)
+                .orElseThrow(() -> new ProductValidationException("Product with code " + code + " not found.", HttpStatus.NOT_FOUND));
+
+        if (request.productName() != null && !request.productName().isBlank()) {
+            product.setProductName(request.productName());
+        }
+
+        if (request.price() != null && request.price() >= 0) {
+            product.setPrice(request.price());
+        }
+
+        if (request.quantity() != null && request.quantity() >= 0) {
+            product.setQuantity(request.quantity());
+        }
+
+        if (request.description() != null && !request.description().isBlank()) {
+            product.setDescription(request.description());
+        }
+        log.info("Product with code '{}' updated successfully", code);
+        return "Product with code " + code + " updated successfully.";
     }
 }

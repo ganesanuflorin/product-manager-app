@@ -1,12 +1,14 @@
 package com.product.manager.controller;
 
 import com.product.manager.dto.ProductDto;
+import com.product.manager.dto.UpdateProductDto;
 import com.product.manager.service.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -36,7 +38,13 @@ public class ProductController {
 
     @PutMapping("/change")
     @Operation(summary = "Update product by code", description = "Updates an existing product's details by its unique code")
-    public ResponseEntity<String> updateProduct(@RequestBody ProductDto request) {
-        return ResponseEntity.ok(productService.updateProduct(request));
+    public ResponseEntity<String> changeProduct(@RequestBody ProductDto request) {
+        return ResponseEntity.ok(productService.changeProduct(request));
+    }
+
+    @PatchMapping("/{code}/update")
+    @Operation(summary = "Update product details", description = "Partially updates a product's details by its unique code")
+    public ResponseEntity<String> updateProduct(@PathVariable Long code, @RequestBody UpdateProductDto request) {
+        return ResponseEntity.ok(productService.updateProduct(code, request));
     }
 }
