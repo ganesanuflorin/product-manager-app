@@ -11,6 +11,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -76,5 +78,33 @@ public class ProductService {
         }
         log.info("Product with code '{}' updated successfully", code);
         return "Product with code " + code + " updated successfully.";
+    }
+
+    @Transactional
+    public String removeProduct(Long code) {
+        if (!productRepository.existsByCode(code)) {
+            log.warn("Attempted to remove non-existing product with code: {}", code);
+            throw new ProductValidationException("Product with code " + code + " does not exist.", HttpStatus.NOT_FOUND);
+        }
+
+        productRepository.deleteByCode(code);
+        log.info("Product with code '{}' removed successfully", code);
+
+        return "Product with code " + code + " removed successfully.";
+    }
+
+    public List<ProductDto> getAllProducts() {
+        List<ProductDto> products = productRepository.findAll()
+                .stream()
+                .map(productMapper::toDto)
+                .toList();
+
+        if (products.isEmpty()) {
+            log.info("No products found in the database.");
+            throw new ProductValidationException("No products found.", HttpStatus.NOT_FOUND);
+        }
+
+        log.info("Retrieved {} products from the database", products.size());
+        return products;
     }
 }
