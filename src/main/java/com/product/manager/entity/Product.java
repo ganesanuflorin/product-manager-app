@@ -39,7 +39,7 @@ public class Product {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "code", unique = true)
+    @Column(name = "code", unique = true, nullable = false)
     private Long code;
 
 }
