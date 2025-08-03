@@ -1,18 +1,22 @@
 package com.product.manager.controller;
 
-import lombok.AllArgsConstructor;
+import com.product.manager.entity.Product;
+import com.product.manager.repository.ProductRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@AllArgsConstructor
+@RequiredArgsConstructor
 @RequestMapping("/api/v1/products")
 public class ProductController {
 
+    private final ProductRepository productRepository;
 
     @PostMapping("/add")
-    public String addProduct() {
-        return "Product added successfully";
+    public Product addProduct() {
+        return productRepository.save(new Product());
     }
+
 }
