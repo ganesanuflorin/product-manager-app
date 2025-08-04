@@ -21,6 +21,7 @@ public class GlobalExceptionHandler {
         );
 
         log.error("Failed: {}", ex.getMessage());
-        return ResponseEntity.ok(errorResponse);
+        return ResponseEntity.status(ex.getStatus())
+                .body(errorResponse);
     }
 }
