@@ -22,7 +22,7 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final ProductMapper productMapper;
 
-    public GenericResponse<?> addProduct(ProductDto productDto) {
+    public GenericResponse<Void> addProduct(ProductDto productDto) {
 
         if (productRepository.existsByCode(productDto.code())) {
             throw new ProductValidationException("Product with code " + productDto.code() + " already exists.", HttpStatus.CONFLICT);
@@ -43,7 +43,7 @@ public class ProductService {
     }
 
     @Transactional
-    public GenericResponse<?> changeProduct(ProductDto productDto) {
+    public GenericResponse<Void> changeProduct(ProductDto productDto) {
 
         var product = productRepository.findByCode(productDto.code())
                 .orElseThrow(() -> new ProductValidationException("Product with code " + productDto.code() + " not found.", HttpStatus.NOT_FOUND));
@@ -56,7 +56,7 @@ public class ProductService {
     }
 
     @Transactional
-    public GenericResponse<?> updateProduct(Long code, UpdateProductDto updateProductDto) {
+    public GenericResponse<Void> updateProduct(Long code, UpdateProductDto updateProductDto) {
 
         var product = productRepository.findByCode(code)
                 .orElseThrow(() -> new ProductValidationException("Product with code " + code + " not found.", HttpStatus.NOT_FOUND));
@@ -81,7 +81,7 @@ public class ProductService {
     }
 
     @Transactional
-    public GenericResponse<?> removeProduct(Long code) {
+    public GenericResponse<Void> removeProduct(Long code) {
         if (!productRepository.existsByCode(code)) {
             throw new ProductValidationException("Product with code " + code + " does not exist.", HttpStatus.NOT_FOUND);
         }
@@ -103,7 +103,7 @@ public class ProductService {
     }
 
     @Transactional
-    public GenericResponse<?> changeProductPrice(Long code, Double price) {
+    public GenericResponse<Void> changeProductPrice(Long code, Double price) {
         if (price == null || price < 0) {
             throw new ProductValidationException("Price must be a non-negative value.", HttpStatus.BAD_REQUEST);
         }
