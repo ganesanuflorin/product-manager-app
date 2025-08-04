@@ -1,5 +1,6 @@
 package com.product.manager.controller;
 
+import com.product.manager.dto.GenericResponse;
 import com.product.manager.dto.ProductDto;
 import com.product.manager.dto.UpdateProductDto;
 import com.product.manager.service.ProductService;
@@ -29,37 +30,43 @@ public class ProductController {
 
     @PostMapping("/add")
     @Operation(summary = "Add a new product", description = "Saves a new product to the database")
-    public ResponseEntity<String> addProduct(@RequestBody ProductDto request) {
+    public ResponseEntity<GenericResponse<?>> addProduct(@RequestBody ProductDto request) {
         return ResponseEntity.ok(productService.addProduct(request));
     }
 
     @GetMapping("/{code}")
     @Operation(summary = "Get product by code", description = "Retrieves a product by its unique code")
-    public ResponseEntity<ProductDto> getProductByCode(@PathVariable Long code) {
+    public ResponseEntity<GenericResponse<ProductDto>> getProductByCode(@PathVariable Long code) {
         return ResponseEntity.ok(productService.getProductByCode(code));
     }
 
     @PutMapping("/change")
     @Operation(summary = "Change product by code", description = "Updates an existing product's details by its unique code")
-    public ResponseEntity<String> changeProduct(@RequestBody ProductDto request) {
+    public ResponseEntity<GenericResponse<?>> changeProduct(@RequestBody ProductDto request) {
         return ResponseEntity.ok(productService.changeProduct(request));
     }
 
     @PatchMapping("/{code}/update")
     @Operation(summary = "Update product details", description = "Partially updates a product's details by its unique code")
-    public ResponseEntity<String> updateProduct(@PathVariable Long code, @RequestBody UpdateProductDto request) {
+    public ResponseEntity<GenericResponse<?>> updateProduct(@PathVariable Long code, @RequestBody UpdateProductDto request) {
         return ResponseEntity.ok(productService.updateProduct(code, request));
     }
 
-    @DeleteMapping("/remove/{code}")
+    @DeleteMapping("/{code}")
     @Operation(summary = "Remove product by code", description = "Deletes a product by its unique code")
-    public ResponseEntity<String> removeProduct(@PathVariable Long code) {
+    public ResponseEntity<GenericResponse<?>> removeProduct(@PathVariable Long code) {
         return ResponseEntity.ok(productService.removeProduct(code));
     }
 
-    @GetMapping("/all")
+    @GetMapping("/list")
     @Operation(summary = "Get all products", description = "Retrieves a list of all products")
-    public ResponseEntity<List<ProductDto>> getAllProducts() {
+    public ResponseEntity<GenericResponse<List<ProductDto>>> getAllProducts() {
         return ResponseEntity.ok(productService.getAllProducts());
+    }
+
+    @PutMapping("/{code}/change/{price}")
+    @Operation(summary = "Change product price", description = "Updates the price of a product by its unique code")
+    public ResponseEntity<GenericResponse<?>> changeProductPrice(@PathVariable Long code, @PathVariable Double price) {
+        return ResponseEntity.ok(productService.changeProductPrice(code, price));
     }
 }

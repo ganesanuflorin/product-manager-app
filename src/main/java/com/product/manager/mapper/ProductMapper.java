@@ -4,6 +4,7 @@ import com.product.manager.dto.ProductDto;
 import com.product.manager.entity.Product;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 
 @Mapper(componentModel = "spring")
 public interface ProductMapper {
@@ -12,4 +13,6 @@ public interface ProductMapper {
 
     @Mapping(target = "id", ignore = true)
     Product toEntity(ProductDto productDto);
+
+    void updateEntityFromDto(ProductDto productDto, @MappingTarget Product product);
 }
