@@ -138,7 +138,13 @@ Integration tests are written with:
 A Postman collection is provided to test all endpoints. You can import it into Postman to quickly start testing the API.
 You can find the collection in source directory with name: product_postman_collection.json .
 
+## ▶️ Running the App
 
+To run the application, you need to add in VM options the following:
+
+```text
+-Djwt.secret-key=your_secret_key
+```
 
 ## 🤝 Author
 Made by Gigi Florin Ganesanu
